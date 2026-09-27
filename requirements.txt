@@ -1,0 +1,2 @@
+numpy
+llm_sdk
