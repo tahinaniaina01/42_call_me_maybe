@@ -1,6 +1,5 @@
-def main():
-    print("Hello from call-me-maybe!")
+from llm_sdk import Small_LLM_Model
 
+sdk = Small_LLM_Model()
 
-if __name__ == "__main__":
-    main()
+print(sdk.encode("Il était un fois").tolist())
