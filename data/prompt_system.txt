@@ -34,4 +34,4 @@ Output: {"prompt": "Reverse the string 'hello'", "name": "reverse_string", "para
 Now process this request.
 
 Request: {user_prompt}
-Output:
+Output: {"prompt": "{user_prompt}", "name": "

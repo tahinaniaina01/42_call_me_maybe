@@ -1,0 +1,10 @@
+[
+  {
+    "prompt": "What is the sum of 2 and 5.7?",
+    "name": "add_numbers",
+    "parameters": {
+      "a": 2,
+      "b": 5.7
+    }
+  }
+]
