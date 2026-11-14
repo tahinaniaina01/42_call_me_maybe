@@ -1,0 +1,7 @@
+/no_think
+Extract arguments for {function_name}({param_desc}).
+Output ONLY a valid JSON object with the parameter values.
+number type must have a decimal point (e.g. 5.0). string in double quotes. Extract values exactly from the request.
+
+Request: {user_prompt}
+Arguments: {

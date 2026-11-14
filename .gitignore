@@ -2,3 +2,5 @@
 .venv
 .python-version
 dev_utils
+*.lock
+uv.lock

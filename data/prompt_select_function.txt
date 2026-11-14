@@ -1,0 +1,8 @@
+/no_think
+Choose the function to call. Output ONLY the function name, nothing else.
+
+Functions:
+{functions_list}
+
+Request: {user_prompt}
+Function: 
