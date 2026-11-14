@@ -4,3 +4,4 @@
 dev_utils
 *.lock
 uv.lock
+__pycache__

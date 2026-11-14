@@ -1,10 +1,11 @@
 <|im_start|>system
-You are a function selector. Choose the function that best matches the user request.
-Functions:
+You are a function selector. Given a request and functions, choose the best function name.
+Available functions:
 {functions_list}<|im_end|>
 <|im_start|>user
 Request: {user_prompt}<|im_end|>
 <|im_start|>assistant
 <think>
+{user_prompt}
 </think>
-fn
+Function: 

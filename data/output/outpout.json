@@ -1,25 +1,25 @@
 [
   {
     "prompt": "What is the sum of 2 and 3?",
-    "name": "fn_add_numbers",
+    "name": "add_numbers",
     "parameters": {
       "a": 2.0,
-      "b": 3.0
+      "x": 3.0
     }
   },
   {
     "prompt": "What is the sum of 265 and 345?",
-    "name": "fn_add_numbers",
+    "name": "add_numbers",
     "parameters": {
       "a": 265.0,
-      "b": 345.0
+      "x": 345.0
     }
   },
   {
     "prompt": "Greet shrek",
     "name": "fn_greet",
     "parameters": {
-      "name": "shrek"
+      "name": "Shrek"
     }
   },
   {
@@ -33,28 +33,28 @@
     "prompt": "Reverse the string 'hello'",
     "name": "fn_reverse_string",
     "parameters": {
-      "s": "hello"
+      "s": "olleh"
     }
   },
   {
     "prompt": "Reverse the string 'world'",
     "name": "fn_reverse_string",
     "parameters": {
-      "s": "world"
+      "s": "dlrow"
     }
   },
   {
     "prompt": "What is the square root of 16?",
     "name": "fn_get_square_root",
     "parameters": {
-      "a": 16.0
+      "a": 4.0
     }
   },
   {
     "prompt": "Calculate the square root of 144",
     "name": "fn_get_square_root",
     "parameters": {
-      "a": 144.0
+      "a": 12.0
     }
   },
   {
@@ -72,7 +72,7 @@
     "parameters": {
       "source_string": "Programming is fun",
       "regex": "([aeiouAEIOU])",
-      "replacement": "asterisk"
+      "replacement": "*"
     }
   },
   {

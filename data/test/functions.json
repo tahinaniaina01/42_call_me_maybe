@@ -1,13 +1,13 @@
 [
   {
-    "name": "fn_add_numbers",
+    "name": "add",
     "description": "Add two numbers together and return their sum.",
     "parameters": {
       "a": {
-        "type": "number"
+        "type": "int"
       },
       "b": {
-        "type": "number"
+        "type": "int"
       }
     },
     "returns": {

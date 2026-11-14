@@ -1,12 +1,12 @@
 [
   {
-    "name": "fn_add_numbers",
+    "name": "add_numbers",
     "description": "Add two numbers together and return their sum.",
     "parameters": {
       "a": {
         "type": "number"
       },
-      "b": {
+      "x": {
         "type": "number"
       }
     },

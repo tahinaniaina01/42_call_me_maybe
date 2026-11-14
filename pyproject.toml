@@ -12,4 +12,5 @@ dependencies = [
     "accelerate>=1.15.0",
     "llm-sdk>=1.0.1",
     "numpy>=2.4.6",
+    "pydantic>=2.14.3",
 ]
