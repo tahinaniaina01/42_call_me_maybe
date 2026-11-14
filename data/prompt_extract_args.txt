@@ -5,7 +5,8 @@ Parameters to extract:
 {param_list}
 
 Output format:
-{param_format}<|im_end|>
+{param_format}
+Extract exact input values from the user request without computing or transforming them.<|im_end|>
 <|im_start|>user
 Request: {user_prompt}<|im_end|>
 <|im_start|>assistant

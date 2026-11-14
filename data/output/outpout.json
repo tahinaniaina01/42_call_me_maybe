@@ -19,7 +19,7 @@
     "prompt": "Greet shrek",
     "name": "fn_greet",
     "parameters": {
-      "name": "Shrek"
+      "name": "shrek"
     }
   },
   {
@@ -33,14 +33,14 @@
     "prompt": "Reverse the string 'hello'",
     "name": "fn_reverse_string",
     "parameters": {
-      "s": "olleh"
+      "s": "hello"
     }
   },
   {
     "prompt": "Reverse the string 'world'",
     "name": "fn_reverse_string",
     "parameters": {
-      "s": "dlrow"
+      "s": "world"
     }
   },
   {
@@ -54,7 +54,7 @@
     "prompt": "Calculate the square root of 144",
     "name": "fn_get_square_root",
     "parameters": {
-      "a": 12.0
+      "a": 144.0
     }
   },
   {
@@ -72,7 +72,7 @@
     "parameters": {
       "source_string": "Programming is fun",
       "regex": "([aeiouAEIOU])",
-      "replacement": "*"
+      "replacement": "asterisk"
     }
   },
   {
