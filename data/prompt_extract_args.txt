@@ -1,7 +1,13 @@
-/no_think
-Extract arguments for {function_name}({param_desc}).
-Output ONLY a valid JSON object with the parameter values.
-number type must have a decimal point (e.g. 5.0). string in double quotes. Extract values exactly from the request.
-
-Request: {user_prompt}
-Arguments: {
+<|im_start|>system
+You are an argument extractor. Extract the parameters for {function_name}({param_desc}).
+Output ONLY a valid JSON object with the parameters.
+Types:
+- number: float with decimal point (e.g. 2.0).
+- string: string without quotes from request.
+Extract values exactly as they appear in the request.<|im_end|>
+<|im_start|>user
+Request: {user_prompt}<|im_end|>
+<|im_start|>assistant
+<think>
+</think>
+{

@@ -1,8 +1,10 @@
-/no_think
-Choose the function to call. Output ONLY the function name, nothing else.
-
+<|im_start|>system
+You are a function selector. Choose the function that best matches the user request.
 Functions:
-{functions_list}
-
-Request: {user_prompt}
-Function: 
+{functions_list}<|im_end|>
+<|im_start|>user
+Request: {user_prompt}<|im_end|>
+<|im_start|>assistant
+<think>
+</think>
+fn

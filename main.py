@@ -11,71 +11,35 @@ prompt_args_tpl = open("data/prompt_extract_args.txt").read()
 
 
 def select_function(user_prompt: str, functions: list[dict]) -> str:
-    """
-    Use the LLM to select the best function for a user request.
-    Trie-based early exit: stops generating tokens as soon as the
-    generated prefix uniquely identifies one function name.
-    e.g. after generating "fn_add" we know it can only be "fn_add_numbers" → stop.
-    """
     func_names = [f["name"] for f in functions]
-
-    func_list = "\n".join(
-        f'- {f["name"]}: {f["description"]}' for f in functions
-    )
+    func_list = "\n".join(f'- {f["name"]}: {f["description"]}' for f in functions)
 
     prompt = (prompt_select_tpl
               .replace("{functions_list}", func_list)
               .replace("{user_prompt}", user_prompt))
 
     ids = sdk.encode(prompt).tolist()[0]
-    generated_ids = []
+    
+    next_tokens = {}
+    for name in func_names:
+        toks = sdk.encode(name).tolist()[0]
+        if len(toks) > 1:
+            next_tokens[toks[1]] = name
 
-    for _ in range(50):
-        logits = sdk.get_logits_from_input_ids(ids)
-        token_id = int(np.argmax(logits))
-        ids.append(token_id)
-        generated_ids.append(token_id)
-
-        generated_text = sdk.decode(generated_ids).strip().strip('"')
-        if not generated_text:
-            continue
-
-        candidates = [n for n in func_names if n.startswith(generated_text)]
-
-        if len(candidates) == 1:
-            return candidates[0]
-        if len(candidates) == 0:
-            for n in func_names:
-                if generated_text.startswith(n):
-                    return n
-            break
-
-    generated_text = sdk.decode(generated_ids).strip().strip('"')
-    best, best_len = func_names[0], 0
-    for n in func_names:
-        match_len = 0
-        for a, b in zip(generated_text, n):
-            if a == b:
-                match_len += 1
-            else:
-                break
-        if match_len > best_len:
-            best, best_len = n, match_len
-    return best
+    logits = sdk.get_logits_from_input_ids(ids)
+    
+    scores = {name: logits[tok_id] for tok_id, name in next_tokens.items()}
+    best_candidate = max(scores, key=scores.get)
+    return best_candidate
 
 
 def extract_arguments(user_prompt: str, functions: list[dict], function_name: str) -> dict:
-    """
-    Use the LLM to extract arguments from the user request for the chosen function.
-    Only generates the JSON arguments object (not the full output wrapper).
-    Uses brace tracking to stop as soon as the JSON object is complete.
-    """
     func_def = next(f for f in functions if f["name"] == function_name)
-    params = func_def["parameters"]
+    params = func_def.get("parameters", {})
+    if not params:
+        return {}
 
-    param_desc = ", ".join(
-        f'{name}: {info["type"]}' for name, info in params.items()
-    )
+    param_desc = ", ".join(f'{name}: {info["type"]}' for name, info in params.items())
 
     prompt = (prompt_args_tpl
               .replace("{function_name}", function_name)
@@ -86,7 +50,7 @@ def extract_arguments(user_prompt: str, functions: list[dict], function_name: st
     response_ids = []
     br = ["{"]
 
-    for _ in range(200):
+    for _ in range(80):
         logits = sdk.get_logits_from_input_ids(ids)
         token_id = int(np.argmax(logits))
         ids.append(token_id)
@@ -109,6 +73,23 @@ def extract_arguments(user_prompt: str, functions: list[dict], function_name: st
     return json.loads(text)
 
 
+def fix_argument_types(args: dict, func_def: dict) -> dict:
+    params = func_def.get("parameters", {})
+    fixed = {}
+    for k, v in args.items():
+        if k in params:
+            expected_type = params[k].get("type")
+            if expected_type == "number" and isinstance(v, (int, float)):
+                fixed[k] = float(v)
+            elif expected_type == "integer" and isinstance(v, (int, float)):
+                fixed[k] = int(v)
+            else:
+                fixed[k] = v
+        else:
+            fixed[k] = v
+    return fixed
+
+
 functions = json.load(open("data/input/functions_definition.json"))
 prompts = json.load(open("data/input/function_calling_tests.json"))
 
@@ -121,8 +102,10 @@ for item in prompts:
     func_name = select_function(user_prompt, functions)
     print(f"  Function: {func_name}")
 
+    func_def = next(f for f in functions if f["name"] == func_name)
     try:
         args = extract_arguments(user_prompt, functions, func_name)
+        args = fix_argument_types(args, func_def)
         print(f"  Args: {args}")
         results.append({
             "prompt": user_prompt,
@@ -134,4 +117,4 @@ for item in prompts:
 
 json.dump(results, open("data/output/outpout.json", "w"), indent=2)
 end = time()
-print(f"\nTotal time: {int((end - start) // 60)}mn {(end - start) % 60:.1f}s")
+print(f"\nTotal time: {int((end - start) // 60)}mn {(end - start) % 60:02f}s")
