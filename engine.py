@@ -44,14 +44,6 @@ class FunctionCallingEngine(BaseModel):
             **kwargs,
         )
 
-    def add_functions(self, functions_data: list[dict[str, Any]]) -> None:
-        """Add or update the available function definitions.
-
-        Args:
-            functions_data: List of function definition dictionaries.
-        """
-        self.functions = functions_data
-
     def select_function(self, user_prompt: str) -> str:
         """Select the best matching function name for a user request.
 

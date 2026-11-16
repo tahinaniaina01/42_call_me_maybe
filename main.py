@@ -8,7 +8,7 @@ from llm_sdk import Small_LLM_Model
 
 
 def main() -> None:
-    """Execute function selection and argument extraction on test prompts."""
+    """Run function selection and argument extraction against test prompts."""
     sdk = Small_LLM_Model(device="cpu")
     engine = FunctionCallingEngine(sdk=sdk)
 
