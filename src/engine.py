@@ -72,6 +72,7 @@ class FunctionCallingEngine(BaseModel):
 
         for _ in range(50):
             logits = self.sdk.get_logits_from_input_ids(ids)
+            
             token_id = int(np.argmax(logits))
             ids.append(token_id)
             generated_ids.append(token_id)

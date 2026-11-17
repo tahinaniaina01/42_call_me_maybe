@@ -3,7 +3,7 @@
 import json
 from time import time
 from typing import Any
-from engine import FunctionCallingEngine
+from .engine import FunctionCallingEngine
 from llm_sdk import Small_LLM_Model
 
 
@@ -13,13 +13,13 @@ def main() -> None:
     engine = FunctionCallingEngine(sdk=sdk)
 
     with open(
-        "data/test/functions_definition.json", "r", encoding="utf-8"
+        "data/input/functions_definition.json", "r", encoding="utf-8"
     ) as f_def:
         functions_data: list[dict[str, Any]] = json.load(f_def)
     engine.add_functions(functions_data)
 
     with open(
-        "data/test/function_calling_tests.json", "r", encoding="utf-8"
+        "data/input/function_calling_tests.json", "r", encoding="utf-8"
     ) as f_tests:
         prompts: list[dict[str, Any]] = json.load(f_tests)
 
@@ -56,4 +56,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as error:
+        print(f"Error: {error}")
