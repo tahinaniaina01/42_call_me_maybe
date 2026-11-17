@@ -13,13 +13,13 @@ def main() -> None:
     engine = FunctionCallingEngine(sdk=sdk)
 
     with open(
-        "data/input/functions_definition.json", "r", encoding="utf-8"
+        "data/test/functions_definition.json", "r", encoding="utf-8"
     ) as f_def:
         functions_data: list[dict[str, Any]] = json.load(f_def)
     engine.add_functions(functions_data)
 
     with open(
-        "data/input/function_calling_tests.json", "r", encoding="utf-8"
+        "data/test/function_calling_tests.json", "r", encoding="utf-8"
     ) as f_tests:
         prompts: list[dict[str, Any]] = json.load(f_tests)
 

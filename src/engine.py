@@ -109,6 +109,14 @@ class FunctionCallingEngine(BaseModel):
 
         return best_candidate
 
+    def add_functions(self, functions_data: list[dict[str, Any]]) -> None:
+        """Add or update the available function definitions.
+
+        Args:
+            functions_data: List of function definition dictionaries.
+        """
+        self.functions = functions_data
+
     def extract_arguments(
         self, user_prompt: str, function_name: str
     ) -> dict[str, Any]:
