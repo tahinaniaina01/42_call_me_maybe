@@ -1,2 +1,0 @@
-numpy
-llm_sdk
