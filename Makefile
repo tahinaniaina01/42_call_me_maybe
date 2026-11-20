@@ -1,12 +1,12 @@
 PYTHON := uv run python
 PATH := $(CURDIR)/.venv/bin:$(PATH)
 
+run:
+	$(PYTHON) -m src
+
 install:
 	uv sync
 	uv pip install flake8 mypy
-
-run:
-	$(PYTHON) -m src
 
 debug:
 	$(PYTHON) -m pdb -m src
