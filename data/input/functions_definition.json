@@ -67,5 +67,13 @@
     "returns": {
       "type": "string"
     }
+  },
+  {
+    "name": "fn_unmatched_request",
+    "description": "Handle any prompt that does not match any of the other functions.",
+    "parameters": {},
+    "returns": {
+      "type": "string"
+    }
   }
 ]

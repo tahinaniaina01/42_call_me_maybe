@@ -20,8 +20,8 @@ class FunctionCallingEngine(BaseModel):
     def __init__(
         self,
         sdk: Small_LLM_Model,
-        prompt_select_path: str = "data/prompt_select_function.txt",
-        prompt_args_path: str = "data/prompt_extract_args.txt",
+        prompt_select_path: str = "utils/prompt_select_function.txt",
+        prompt_args_path: str = "utils/prompt_extract_args.txt",
         **kwargs: Any,
     ) -> None:
         """Initialize the function calling engine with model and prompt templates.
