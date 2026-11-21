@@ -68,47 +68,47 @@ class FunctionCallingEngine(BaseModel):
         )
 
         ids = self.sdk.encode(prompt).tolist()[0]
-        generated_ids: list[int] = []
+        eos_id = int(self.sdk.encode("<|im_end|>").tolist()[0][-1])
+        text = ""
 
         for _ in range(50):
-            logits = self.sdk.get_logits_from_input_ids(ids)
+            logits = np.array(
+                self.sdk.get_logits_from_input_ids(ids), dtype=np.float64
+            ).reshape(-1)
 
-            token_id = int(np.argmax(logits))
-            ids.append(token_id)
-            generated_ids.append(token_id)
+            order = np.argsort(-logits)
 
-            text = self.sdk.decode(generated_ids).strip().strip("\"'`")
-            if not text:
-                continue
+            allowed: dict[int, str] = {}
+            for pool in (order[:200], order):
+                for tid in pool:
+                    tid = int(tid)
+                    piece = self.sdk.decode([tid])
+                    cand = (text + piece) if text else piece.lstrip()
+                    if cand and any(n.startswith(cand) for n in func_names):
+                        allowed[tid] = cand
+                if allowed:
+                    break
 
             if text in func_names:
-                return text
-
-            candidates = [n for n in func_names if n.startswith(text)]
-            if len(candidates) == 1:
-                return candidates[0]
-
-            if len(candidates) == 0:
-                for n in func_names:
-                    if n in text or text.startswith(n):
-                        return n
+                allowed[eos_id] = text
+            if not allowed:
                 break
 
-        text = self.sdk.decode(generated_ids).strip().strip("\"'`")
-        best_candidate = func_names[0]
-        best_len = -1
-        for n in func_names:
-            match_len = 0
-            for c1, c2 in zip(text, n):
-                if c1 == c2:
-                    match_len += 1
-                else:
-                    break
-            if match_len > best_len:
-                best_len = match_len
-                best_candidate = n
+            masked = np.full(len(logits), -np.inf)
+            for tid in allowed:
+                masked[tid] = logits[tid]
 
-        return best_candidate
+            token_id = int(np.argmax(masked))
+            text = allowed[token_id]
+            if token_id == eos_id:
+                return text
+            ids.append(token_id)
+
+            matches = [n for n in func_names if n.startswith(text)]
+            if len(matches) == 1:
+                return matches[0]
+
+        return text if text in func_names else func_names[0]
 
     def add_functions(self, functions_data: list[dict[str, Any]]) -> None:
         """Add or update the available function definitions.
